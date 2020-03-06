@@ -78,6 +78,8 @@ function S3Adapter (options, schema) {
 		accessKeyId: this.options.key,
 		secretAccessKey: this.options.secret,
 		region: this.options.region,
+		endpoint: this.options.endpoint,
+		s3BucketEndpoint: this.options.s3BucketEndpoint,
 	});
 
 	// Ensure the generateFilename option takes a callback
@@ -206,6 +208,9 @@ S3Adapter.prototype.getFileURL = function (file) {
 		file.path = path; // make sure path is available on the file
 		file.bucket = bucket; // make sure bucket is available on the file
 		return this.options.publicUrl(file);
+	}
+	if (typeof this.options.endpoint === 'string') {
+		return this.options.endpoint + absolutePath;
 	}
 	return 'https://' + bucket + '.s3.amazonaws.com' + absolutePath;
 };
